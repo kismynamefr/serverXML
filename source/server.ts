@@ -24,14 +24,14 @@ router.use((req, res, next) => {
     next();
 });
 /** Connect to Mongo */
-mongoose
-    .connect(config.mongo.url, config.mongo.options)
-    .then((result) => {
-        logging.info(NAMESPACE, 'Mongo Connected');
-    })
-    .catch((error) => {
-        logging.error(NAMESPACE, error.message, error);
-    });
+// mongoose
+//     .connect(config.mongo.url, config.mongo.options)
+//     .then((result) => {
+//         logging.info(NAMESPACE, 'Mongo Connected');
+//     })
+//     .catch((error) => {
+//         logging.error(NAMESPACE, error.message, error);
+//     });
 
 /** Parse the body of the request */
 router.use(bodyParser.urlencoded({ extended: true }));
