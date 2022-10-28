@@ -7,8 +7,13 @@
 /coverage
 /node_modules
 /dist
-/env
-# production
-/env
+
+# misc
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 npm-debug.log*
 package-lock.json
