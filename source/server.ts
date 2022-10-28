@@ -1,4 +1,4 @@
-import bodyParser from 'body-parser';
+import bodyParser from "body-parser";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
@@ -7,6 +7,8 @@ import mongoose from 'mongoose';
 import config from './config/config';
 import logging from './config/logging';
 import xmlRouter from './routes/xmlRouter';
+import rateLimit from "express-rate-limit";
+import routerUsers from "./routes/userRouter";
 
 const NAMESPACE = 'Server';
 const router = express();
@@ -24,15 +26,27 @@ router.use((req, res, next) => {
     next();
 });
 /** Connect to Mongo */
-// mongoose
-//     .connect(config.mongo.url, config.mongo.options)
-//     .then((result) => {
-//         logging.info(NAMESPACE, 'Mongo Connected');
-//     })
-//     .catch((error) => {
-//         logging.error(NAMESPACE, error.message, error);
-//     });
 
+mongoose
+    .connect(config.mongo.url, config.mongo.options)
+    .then((result) => {
+        logging.info(NAMESPACE, 'Mongo Connected');
+    })
+    .catch((error) => {
+        logging.error(NAMESPACE, error.message, error);
+    });
+
+/** Limit request API */
+const apiLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minutes
+    max: 60,
+    handler: (req: Request, res: Response) => {
+        return res.status(429).send({
+            status: 500,
+            message: "Too many requests!",
+        });
+    },
+});
 /** Parse the body of the request */
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
@@ -53,13 +67,13 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 
 /** Routes go here */
 router.use('/apiXML/v1', xmlRouter);
+router.use("/apiXML/v1/users", apiLimiter, routerUsers);
 
 /** Error handling */
-router.use((req, res, next) => {
-    const error = new Error('Not found');
-
-    res.status(404).json({
-        message: error.message
+router.use((req: Request, res: Response, next: NextFunction) => {
+    const error = new Error("Not found");
+    return res.status(404).json({
+        message: error.message,
     });
 });
 

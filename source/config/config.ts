@@ -1,11 +1,9 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
+require('dotenv').config({path: '/home/serverXML/.env'});
 
 const MONGO_OPTIONS = {
-    maxPoolSize:50,
-    wtimeoutMS:2500,
-    useNewUrlParser:true
+    maxPoolSize: 50,
+    wtimeoutMS: 2500,
+    useNewUrlParser: true
 };
 
 const MONGO_USERNAME = process.env.MONGO_USERNAME;
@@ -21,7 +19,7 @@ const MONGO = {
 };
 
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
-const SERVER_PORT = process.env.SERVER_PORT || 5506;
+const SERVER_PORT = process.env.SERVER_PORT || 3000;
 
 const SERVER = {
     hostname: SERVER_HOSTNAME,
