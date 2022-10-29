@@ -3,13 +3,15 @@ import xmlInterface from '../interfaces/xmlInterface';
 
 const xmlSchema: Schema = new Schema(
     {
-        walletAddress: { type: String, require: true, maxlength: 42 },
-        piecesID: { type: String, require: true, unique: true, minlength: 1 },
-        attributePieces: { type: String, require: true, minlength: 1 },
+        BBotID: { type: String, require: true },
+        Active: { type: Boolean, require: true, unique: true },
+        HasActivatedTool: { type: String, require: true},
+        ValueBot: { type: Array, require: true },
+        Name: { type: String, require: true },
     },
     {
         timestamps: true,
-        collection: 'Monster'
+        collection: 'XML'
     }
 );
 

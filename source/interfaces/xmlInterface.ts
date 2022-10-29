@@ -1,7 +1,9 @@
 import { Document } from 'mongoose';
 
 export default interface xmlInterface extends Document {
-    walletAddress: String;
-    piecesID: String;
-    attributePieces: String;
+    BBotID: String;
+    Active: Boolean;
+    HasActivatedTool: String;
+    ValueBot: Array<object>;
+    Name: String;
 }

@@ -58,42 +58,6 @@ const LoginUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const GetUsers = async (req: Request, res: Response, next: NextFunction) => {
-    const user = await Users.find();
-    return res.status(200).json({ user });
-};
-const RefreshToken = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    let refreshToken = req.cookies["refreshToken"];
-    if (!refreshToken) return res.status(401).json("You are not authenticated");
-    if (!RefreshTokenArr?.includes(refreshToken))
-        return res.status(401).json("Refresh token is not valid");
-    jwt.verify(
-        refreshToken,
-        String(process.env.JWT_REFRESH_KEY),
-        (err: any, user: any) => {
-            if (err) console.log(err);
-            refreshToken = RefreshTokenArr.filter(
-                (token: any) => token !== refreshToken
-            );
-            const newAccessToken = generateJWTToken(user);
-            const newRefreshToken = generateRefreshJWTToken(user);
-            RefreshTokenArr.push(newRefreshToken);
-            res.cookie("refreshToken", newRefreshToken, {
-                httpOnly: true,
-                secure: false,
-                path: "/",
-                sameSite: "strict",
-            });
-            console.log("Has been refresh token");
-            return res.status(200).json(newAccessToken);
-        }
-    );
-};
-
 const LogoutUser = async (req: Request, res: Response, next: NextFunction) => {
     res.clearCookie("refreshToken");
     RefreshTokenArr = RefreshTokenArr.filter(
@@ -112,6 +76,7 @@ const generateJWTToken = (userData: any) => {
     );
     return accessToken;
 };
+
 const generateRefreshJWTToken = (userData: any) => {
     const refreshToken = jwt.sign(
         { id: userData.id, admin: userData.admin },
@@ -126,7 +91,5 @@ const generateRefreshJWTToken = (userData: any) => {
 export default {
     RegisterUser,
     LoginUser,
-    GetUsers,
-    RefreshToken,
     LogoutUser,
 };

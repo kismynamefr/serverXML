@@ -3,15 +3,10 @@ import userController from "../controllers/userController";
 import middlewareController from "../controllers/middlewareController";
 const routerUsers = express.Router();
 
-routerUsers.get(
-    "/getUsers",
-    middlewareController.verifyAccessToken,
-    userController.GetUsers
-);
 routerUsers.post("/login", userController.LoginUser);
 routerUsers.post(
     "/logout",
-    middlewareController.verifyAccessToken,
+    // middlewareController.verifyAccessToken,
     userController.LogoutUser
 );
 routerUsers.post(
@@ -19,6 +14,5 @@ routerUsers.post(
     //   middlewareController.createAccountLimiter,
     userController.RegisterUser
 );
-routerUsers.post("/refreshToken", userController.RefreshToken);
 
 export default routerUsers;
