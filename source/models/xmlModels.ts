@@ -4,9 +4,9 @@ import xmlInterface from '../interfaces/xmlInterface';
 const xmlSchema: Schema = new Schema(
     {
         BBotID: { type: String, require: true },
-        Active: { type: Boolean, require: true, unique: true },
+        Active: { type: Boolean, require: true },
         HasActivatedTool: { type: String, require: true},
-        ValueBot: { type: Array, require: true },
+        ValueBot: [],
         Name: { type: String, require: true },
     },
     {

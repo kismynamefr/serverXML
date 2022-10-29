@@ -33,7 +33,6 @@ const RegisterUser = async (
 const LoginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const formData = req.body;
-        console.log(formData);
         const userData: any = await Users.findOne({
             username: formData.username,
         });
