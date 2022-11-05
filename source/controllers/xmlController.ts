@@ -32,9 +32,25 @@ const handleDeleteActivatedBot = async (req: Request, res: Response, next: NextF
             }
         })
 }
+const handleEditActivatedBot = async (req: Request, res: Response, next: NextFunction) => {
+    const { formValue } = req.body;
+    await xmlModels.findOneAndUpdate(
+        { _id: formValue._id },
+        {
+            HasActivatedTool: formValue.HasActivatedTool,
+            ValueBot: formValue.ValueBot,
+            Name: formValue.Name
+        }
+    ).then((value: any) => {
+        return res.status(200).json({ status: "Edit bot success" })
+    }).catch((error) => {
+        return res.status(500).json({ error: "Edit bot error" })
+    })
+}
 
 export default {
     handleActiveBot,
     getActivatedBot,
-    handleDeleteActivatedBot
+    handleDeleteActivatedBot,
+    handleEditActivatedBot
 };
