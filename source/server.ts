@@ -68,6 +68,9 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 /** Routes go here */
 router.use('/apiXML/v1', xmlRouter);
 router.use("/apiXML/v1/users", apiLimiter, routerUsers);
+router.get('/apiXML', (req: Request, res: Response, next: NextFunction) => {
+    res.send('Welcome to Server XML');
+});
 
 /** Error handling */
 router.use((req: Request, res: Response, next: NextFunction) => {
