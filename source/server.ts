@@ -9,6 +9,7 @@ import logging from './config/logging';
 import xmlRouter from './routes/xmlRouter';
 import rateLimit from "express-rate-limit";
 import routerUsers from "./routes/userRouter";
+import "./schedule/schedule";
 
 const NAMESPACE = 'Server';
 const router = express();

@@ -1,12 +1,16 @@
 import dotenv from 'dotenv';
 import xmlModels from '../models/xmlModels';
 import { NextFunction, Request, Response } from 'express';
+import moment from 'moment';
 dotenv.config();
 
 const handleActiveBot = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { formValue } = req.body;
-        const dto = new xmlModels(formValue);
+        const { formValue }: any = req.body;
+        const dto = new xmlModels({
+            ...formValue,
+            ExpiredDay: moment(`${formValue.ExpiredDay}`).unix(),
+        });
         await dto
             .save()
             .then((data) => res.status(200).json({ status: "Activated Bot" }))

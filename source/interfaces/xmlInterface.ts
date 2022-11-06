@@ -6,4 +6,5 @@ export default interface xmlInterface extends Document {
     HasActivatedTool: String;
     ValueBot: Array<String>;
     Name: String;
+    ExpiredDay: String;
 }

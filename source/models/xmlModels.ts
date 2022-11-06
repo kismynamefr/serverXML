@@ -8,6 +8,7 @@ const xmlSchema: Schema = new Schema(
         HasActivatedTool: { type: String, require: true},
         ValueBot: [],
         Name: { type: String, require: true },
+        ExpiredDay: { type: String, require: true },
     },
     {
         timestamps: true,
