@@ -7,9 +7,12 @@ dotenv.config();
 const handleActiveBot = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { formValue }: any = req.body;
+        let value: string | number;
+        if (!formValue.ExpiredDay.length) value = 'NERVER';
+        else value = moment(`${formValue.ExpiredDay}`).unix();
         const dto = new xmlModels({
             ...formValue,
-            ExpiredDay: moment(`${formValue.ExpiredDay}`).unix(),
+            ExpiredDay: value,
         });
         await dto
             .save()
@@ -37,13 +40,18 @@ const handleDeleteActivatedBot = async (req: Request, res: Response, next: NextF
         })
 }
 const handleEditActivatedBot = async (req: Request, res: Response, next: NextFunction) => {
-    const { formValue } = req.body;
+    const { formValue } : any = req.body;
+    let value: any;
+    if (formValue.ExpiredDay !== 'NERVER') value = moment(`${formValue.ExpiredDay}`).unix();
+    if (formValue.ExpiredDay === 'NERVER') value = 'NERVER';
     await xmlModels.findOneAndUpdate(
         { _id: formValue._id },
         {
+            BBotID: formValue.BBotID,
             HasActivatedTool: formValue.HasActivatedTool,
             ValueBot: formValue.ValueBot,
-            Name: formValue.Name
+            Name: formValue.Name,
+            ExpiredDay: value
         }
     ).then((value: any) => {
         return res.status(200).json({ status: "Edit bot success" })
