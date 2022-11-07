@@ -40,24 +40,39 @@ const handleDeleteActivatedBot = async (req: Request, res: Response, next: NextF
         })
 }
 const handleEditActivatedBot = async (req: Request, res: Response, next: NextFunction) => {
-    const { formValue } : any = req.body;
+    const { formValue }: any = req.body;
     let value: any;
-    if (formValue.ExpiredDay !== 'NERVER') value = moment(`${formValue.ExpiredDay}`).unix();
-    if (formValue.ExpiredDay === 'NERVER') value = 'NERVER';
-    await xmlModels.findOneAndUpdate(
-        { _id: formValue._id },
-        {
-            BBotID: formValue.BBotID,
-            HasActivatedTool: formValue.HasActivatedTool,
-            ValueBot: formValue.ValueBot,
-            Name: formValue.Name,
-            ExpiredDay: value
-        }
-    ).then((value: any) => {
-        return res.status(200).json({ status: "Edit bot success" })
-    }).catch((error) => {
-        return res.status(500).json({ error: "Edit bot error" })
-    })
+    if (formValue.ExpiredDay === 'NERVER') {
+        value = 'NERVER';
+        await xmlModels.findOneAndUpdate(
+            { _id: formValue._id },
+            {
+                BBotID: formValue.BBotID,
+                ValueBot: formValue.ValueBot,
+                Name: formValue.Name,
+                ExpiredDay: value
+            }
+        ).then((value: any) => {
+            return res.status(200).json({ status: "Edit bot success" })
+        }).catch((error) => {
+            return res.status(500).json({ error: "Edit bot error" })
+        })
+    } else {
+        value = moment(`${formValue.ExpiredDay}`).unix();
+        await xmlModels.findOneAndUpdate(
+            { _id: formValue._id },
+            {
+                BBotID: formValue.BBotID,
+                ValueBot: formValue.ValueBot,
+                Name: formValue.Name,
+                ExpiredDay: value
+            }
+        ).then((value: any) => {
+            return res.status(200).json({ status: "Edit bot success" })
+        }).catch((error) => {
+            return res.status(500).json({ error: "Edit bot error" })
+        })
+    }
 }
 
 export default {
